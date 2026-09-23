@@ -32,3 +32,21 @@ Do not commit real passwords, database credentials, API keys, or production data
 
 ## Project status
 Educational project demonstrating PHP/MySQL CRUD and appointment-management concepts.
+
+
+## Configuration
+
+The application reads database settings from environment variables:
+
+- `HMS_DB_HOST` (default: `127.0.0.1`)
+- `HMS_DB_USER` (default: `root`)
+- `HMS_DB_PASSWORD`
+- `HMS_DB_NAME` (default: `hospitalms`)
+
+For local development, configure these variables in your web server environment rather than committing credentials to the repository.
+
+## Security improvements
+
+The legacy authentication flow now uses prepared statements and `password_hash()` / `password_verify()`. Existing legacy password records are upgraded to secure hashes after a successful login.
+
+A PHP lint workflow is included under `.github/workflows/php-lint.yml`.
