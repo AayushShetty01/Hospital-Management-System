@@ -1,146 +1,46 @@
 <?php
 session_start();
-$con=mysqli_connect("localhost","root","","hospitalms");
-if(isset($_POST['docsub1'])){
-	$dname=$_POST['username3'];
-	$dpass=$_POST['password3'];
-	$query="select * from doctb where username='$dname' and password='$dpass';";
-	$result=mysqli_query($con,$query);
-	if(mysqli_num_rows($result)==1)
-	{
-    while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-    
-		      $_SESSION['dname']=$row['username'];
-      
+require_once __DIR__ . '/db.php';
+$con = db();
+
+if (isset($_POST['docsub1'])) {
+    $dname = trim($_POST['username3'] ?? '');
+    $dpass = (string)($_POST['password3'] ?? '');
+
+    $stmt = $con->prepare('SELECT username, password FROM doctb WHERE username = ? LIMIT 1');
+    $stmt->bind_param('s', $dname);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+
+    $valid = $row && (password_verify($dpass, $row['password']) || hash_equals((string)$row['password'], $dpass));
+
+    if ($valid) {
+        if (!password_verify($dpass, $row['password'])) {
+            $hash = password_hash($dpass, PASSWORD_DEFAULT);
+            $upgrade = $con->prepare('UPDATE doctb SET password = ? WHERE username = ?');
+            $upgrade->bind_param('ss', $hash, $dname);
+            $upgrade->execute();
+        }
+
+        session_regenerate_id(true);
+        $_SESSION['dname'] = $row['username'];
+        header('Location: doctor-panel.php');
+        exit;
     }
-		header("Location:doctor-panel.php");
-	}
-	else{
-    // header("Location:error2.php");
-    echo("<script>alert('Invalid Username or Password. Try Again!');
-          window.location.href = 'index.php';</script>");
-  }
+
+    echo("<script>alert('Invalid Username or Password. Try Again!'); window.location.href = 'index.php';</script>");
 }
-
-
-// if(isset($_POST['update_data']))  
-//   $result=mysqli_query($con,$query);
-//   if(mysqli_num_rows($result)==1)
-//   {
-//     $_SESSION['username']=$username;
-//     header("Location:admin-panel.php");
-//   }
-//   else
-//     header("Location:error2.php");
-  
-
-
 
 function display_docs()
 {
-	global $con;
-	$query="select * from doctb";
-	$result=mysqli_query($con,$query);
-	while($row=mysqli_fetch_array($result))
-	{
-		$name=$row['name'];
-		# echo'<option value="" disabled selected>Select Doctor</option>';
-		echo '<option value="'.$name.'">'.$name.'</option>';
-	}
+    global $con;
+    $result = $con->query('SELECT username, doctorname FROM doctb ORDER BY doctorname, username');
+    while ($row = $result->fetch_assoc()) {
+        $name = htmlspecialchars($row['doctorname'] ?: $row['username'], ENT_QUOTES, 'UTF-8');
+        echo '<option value="' . htmlspecialchars($row['username'], ENT_QUOTES, 'UTF-8') . '">' . $name . '</option>';
+    }
 }
 
-// if(isset($_POST['doc_sub']))
-// {
-// 	$name=$_POST['name'];
-// 	$query="insert into doctb(name)values('$name')";
-// 	$result=mysqli_query($con,$query);
-// 	if($result)
-// 		header("Location:adddoc.php");
-// }
-
-
-function display_admin_panel(){
-	echo '<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-      <a class="navbar-brand" href="#"><i class="fa fa-hospital-o" aria-hidden="true"></i> Hospital Management System</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-     <ul class="navbar-nav mr-auto">
-       <li class="nav-item">
-        <a class="nav-link" href="logout.php"><i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="#"></a>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0" method="post" action="search.php">
-      <input class="form-control mr-sm-2" type="text" placeholder="enter contact number" aria-label="Search" name="contact">
-      <input type="submit" class="btn btn-outline-light my-2 my-sm-0 btn btn-outline-light" id="inputbtn" name="search_submit" value="Search">
-    </form>
-  </div>
-</nav>
-  </head>
-  <style type="text/css">
-    button:hover{cursor:pointer;}
-    #inputbtn:hover{cursor:pointer;}
-  </style>
-  <body style="padding-top:50px;">
- <div class="jumbotron" id="ab1"></div>
-   <div class="container-fluid" style="margin-top:50px;">
-    <div class="row">
-  <div class="col-md-4">
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Appointment</a>
-      <a class="list-group-item list-group-item-action" href="patientdetails.php" role="tab" aria-controls="home">Patient List</a>
-      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Payment Status</a>
-      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Prescription</a>
-      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Doctors Section</a>
-       <a class="list-group-item list-group-item-action" id="list-attend-list" data-toggle="list" href="#list-attend" role="tab" aria-controls="settings">Attendance</a>
-    </div><br>
-  </div>
-
-  
-
-
-
-
-
-  <div class="col-md-8">
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-        <div class="container-fluid">
-          <div class="card">
-            <div class="card-body">
-              <center><h4>Create an appointment</h4></center><br>
-              <form class="form-group" method="post" action="appointment.php">
-                <div class="row">
-                  <div class="col-md-4"><label>First Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control" name="fname"></div><br><br>
-                  <div class="col-md-4"><label>Last Name:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control"  name="lname"></div><br><br>
-                  <div class="col-md-4"><label>Email id:</label></div>
-                  <div class="col-md-8"><input type="text"  class="form-control" name="email"></div><br><br>
-                  <div class="col-md-4"><label>Contact Number:</label></div>
-                  <div class="col-md-8"><input type="text" class="form-control"  name="contact"></div><br><br>
-                  <div class="col-md-4"><label>Doctor:</label></div>
-                  <div class="col-md-8">
-                   <select name="doctor" class="form-control" >
-
-                     <!-- <option value="" disabled selected>Select Doctor</option>
-                     <option value="Dr. Punam Shaw">Dr. Punam Shaw</option>
-                      <option value="Dr. Ashok Goyal">Dr. Ashok Goyal</option> -->
-                      <?php display_docs();?>
 
 
 
