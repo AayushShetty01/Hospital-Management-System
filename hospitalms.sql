@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admintb` (
   `username` varchar(50) NOT NULL,
-  `password` varchar(30) NOT NULL
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -37,7 +37,7 @@ CREATE TABLE `admintb` (
 --
 
 INSERT INTO `admintb` (`username`, `password`) VALUES
-('admin', 'admin123');
+('admin', '$2y$12$hTEdmkIFR0Vn3EK8EJVhzeQ.Quy7.yn7UuCSXgECKXbTOsGyqXQke');
 
 -- --------------------------------------------------------
 
@@ -114,13 +114,13 @@ CREATE TABLE `doctb` (
 --
 
 INSERT INTO `doctb` (`username`, `password`, `doctorname`, `email`, `spec`, `docFees`) VALUES
-('WillWilliams', 'password', 'Will Williams', 'williams@gmail.com', 'Cardiologist', 435),
-('Ralph', 'password', 'Ralphn Bh', 'ralph@gmail.com', 'Neurologist', 450),
-('ryan', 'password', 'Ryan Chandler', 'ryanc@gmail.com', 'Pediatrician', 440),
-('lewis', 'password', 'Lou Lewis', 'lewis@gmail.com', 'Gynecologist', 280),
-('chris', 'password', 'Chris Olivas', 'chris@gmail.com', 'Oncologist', 580),
-('danial', 'password', 'Danial Rivera', 'danial@gmail.com', 'Neurologist', 210),
-('admin', 'password', 'Ray Holger', 'holger@gmail.com', 'Oncologist', 600);
+('WillWilliams', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Will Williams', 'williams@gmail.com', 'Cardiologist', 435),
+('Ralph', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Ralphn Bh', 'ralph@gmail.com', 'Neurologist', 450),
+('ryan', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Ryan Chandler', 'ryanc@gmail.com', 'Pediatrician', 440),
+('lewis', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Lou Lewis', 'lewis@gmail.com', 'Gynecologist', 280),
+('chris', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Chris Olivas', 'chris@gmail.com', 'Oncologist', 580),
+('danial', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Danial Rivera', 'danial@gmail.com', 'Neurologist', 210),
+('admin', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', 'Ray Holger', 'holger@gmail.com', 'Oncologist', 600);
 
 -- --------------------------------------------------------
 
@@ -135,8 +135,8 @@ CREATE TABLE `patreg` (
   `gender` varchar(10) NOT NULL,
   `email` varchar(30) NOT NULL,
   `contact` varchar(10) NOT NULL,
-  `password` varchar(30) NOT NULL,
-  `cpassword` varchar(30) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `cpassword` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -144,12 +144,12 @@ CREATE TABLE `patreg` (
 --
 
 INSERT INTO `patreg` (`pid`, `fname`, `lname`, `gender`, `email`, `contact`, `password`, `cpassword`) VALUES
-(1, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', 'pass', 'pass'),
-(2, 'Emily', 'Smith', 'Female', 'emily@gmail.com', '7896541222', 'pass', 'pass'),
-(3, 'Robert', 'Ray', 'Male', 'robert@gmail.com', '7014744444', 'pass', 'pass'),
-(5, 'Sumukha', 'Bhatt', 'Male', 's@gmail.com', '9986795456', 'password', 'password'),
-(6, 'aayush', 'shetty', 'Male', 'a@gmail.com', '9930436041', 'password', 'password'),
-(14, 'Sambhram', 'Padmashali', 'Male', 'sambhram@gmail.com', '8323212189', 'password', 'password');
+(1, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO'),
+(2, 'Emily', 'Smith', 'Female', 'emily@gmail.com', '7896541222', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO'),
+(3, 'Robert', 'Ray', 'Male', 'robert@gmail.com', '7014744444', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO', '$2y$12$ktNSIWhm7Ef.7CUJ82.CuOmPesF7Bt1ryLKsuX2vDL8YU4G3TZMZO'),
+(5, 'Sumukha', 'Bhatt', 'Male', 's@gmail.com', '9986795456', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq'),
+(6, 'aayush', 'shetty', 'Male', 'a@gmail.com', '9930436041', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq'),
+(14, 'Sambhram', 'Padmashali', 'Male', 'sambhram@gmail.com', '8323212189', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq', '$2y$12$OGfT65OMFR5X0HVU59X1rOBZ2RScUZdnk12IDRbvI0j1HUp3rv1Kq');
 
 -- --------------------------------------------------------
 
