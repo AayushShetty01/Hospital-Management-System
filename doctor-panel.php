@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php 
 include('func1.php');
-$con=mysqli_connect("localhost","root","","hospitalms");
+$con=db();
 $doctor = $_SESSION['dname'];
 if(isset($_GET['cancel']))
   {
@@ -181,11 +181,13 @@ if(isset($_GET['cancel']))
                 </thead>
                 <tbody>
                   <?php 
-                    $con=mysqli_connect("localhost","root","","hospitalms");
+                    $con=db();
                     global $con;
                     $dname = $_SESSION['dname'];
-                    $query = "select pid,ID,fname,lname,gender,email,contact,appdate,apptime,userStatus,doctorStatus from appointmenttb where doctor='$dname';";
-                    $result = mysqli_query($con,$query);
+                    $stmt = $con->prepare('SELECT pid, ID, fname, lname, gender, email, contact, appdate, apptime, userStatus, doctorStatus FROM appointmenttb WHERE doctor = ?');
+                    $stmt->bind_param('s', $dname);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     $cnt=1;
                     while ($row = mysqli_fetch_array($result)){
                       ?>
@@ -270,7 +272,7 @@ if(isset($_GET['cancel']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","hospitalms");
+                    $con=db();
                     global $con;
 
                     $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from prestb where doctor='$doctor';";
@@ -320,7 +322,7 @@ if(isset($_GET['cancel']))
                 <tbody>
                   <?php 
 
-                    $con=mysqli_connect("localhost","root","","hospitalms");
+                    $con=db();
                     global $con;
 
                     $query = "select * from appointmenttb;";
