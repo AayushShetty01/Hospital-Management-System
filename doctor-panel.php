@@ -275,11 +275,14 @@ if(isset($_GET['cancel']))
                     $con=db();
                     global $con;
 
-                    $query = "select pid,fname,lname,ID,appdate,apptime,disease,allergy,prescription from prestb where doctor='$doctor';";
+                    $dname = $_SESSION['dname'] ?? '';
+                    $stmt = $con->prepare('SELECT pid, fname, lname, ID, appdate, apptime, disease, allergy, prescription FROM prestb WHERE doctor = ?');
+                    $stmt->bind_param('s', $dname);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     
-                    $result = mysqli_query($con,$query);
-                    if(!$result){
-                      echo mysqli_error($con);
+                    if (!$result) {
+                      echo htmlspecialchars($con->error, ENT_QUOTES, 'UTF-8');
                     }
                     
                     $cnt=1;
