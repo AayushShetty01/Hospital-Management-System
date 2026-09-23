@@ -58,19 +58,20 @@ CREATE TABLE `appointmenttb` (
   `appdate` date NOT NULL,
   `apptime` time NOT NULL,
   `userStatus` int(5) NOT NULL,
-  `doctorStatus` int(5) NOT NULL
+  `doctorStatus` int(5) NOT NULL,
+  `payment` varchar(20) NOT NULL DEFAULT 'pay later'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `appointmenttb`
 --
 
-INSERT INTO `appointmenttb` (`pid`, `ID`, `fname`, `lname`, `gender`, `email`, `contact`, `doctor`, `docFees`, `appdate`, `apptime`, `userStatus`, `doctorStatus`) VALUES
-(12, 14, 'Liam', 'Moore', 'Male', 'liam@gmail.com', '7412225680', 'WillWilliams', 435, '2021-12-26', '10:00:00', 0, 1),
-(1, 15, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', 'ryan', 440, '2021-12-28', '14:00:00', 0, 1),
-(1, 16, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', 'ryan', 440, '2021-12-29', '10:00:00', 1, 1),
-(11, 17, 'Kathryn', 'Anderson', 'Female', 'kathryn@gmail.com', '7850002580', 'lewis', 280, '2021-12-30', '10:00:00', 1, 1),
-(13, 18, 'Brian', 'Rowe', 'Male', 'brian@gmail.com', '7012569999', 'Ralph', 450, '2021-12-31', '08:00:00', 1, 1),
+INSERT INTO `appointmenttb` (`pid`, `ID`, `fname`, `lname`, `gender`, `email`, `contact`, `doctor`, `docFees`, `appdate`, `apptime`, `userStatus`, `doctorStatus`, `payment`) VALUES
+(12, 14, 'Liam', 'Moore', 'Male', 'liam@gmail.com', '7412225680', 'WillWilliams', 435, '2021-12-26', '10:00:00', 0, 1, 'pay later'),
+(1, 15, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', 'ryan', 440, '2021-12-28', '14:00:00', 0, 1, 'pay later'),
+(1, 16, 'Curtis', 'Hicks', 'Male', 'curtis@gmail.com', '7410000010', 'ryan', 440, '2021-12-29', '10:00:00', 1, 1, 'pay later'),
+(11, 17, 'Kathryn', 'Anderson', 'Female', 'kathryn@gmail.com', '7850002580', 'lewis', 280, '2021-12-30', '10:00:00', 1, 1, 'pay later'),
+(13, 18, 'Brian', 'Rowe', 'Male', 'brian@gmail.com', '7012569999', 'Ralph', 450, '2021-12-31', '08:00:00', 1, 1, 'pay later'),
 (12, 19, 'Liam', 'Moore', 'Male', 'liam@gmail.com', '7412225680', 'WillWilliams', 435, '2022-01-01', '14:00:00', 1, 1);
 
 -- --------------------------------------------------------
